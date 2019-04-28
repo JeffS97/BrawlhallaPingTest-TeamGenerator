@@ -14,13 +14,14 @@ public class PingChecker {
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @wbp.parser.entryPoint
 	 */
 	void initializePing(JFrame frmProject) {
 		
 		frmProject.getContentPane().setForeground(Color.CYAN);
 		frmProject.setForeground(Color.WHITE);
 		frmProject.setTitle("AUSSEA Ping Checker");
-		frmProject.setBounds(100, 100, 454, 262);
+		frmProject.setBounds(100, 100, 454, 318);
 		frmProject.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmProject.getContentPane().setLayout(null);
 		
@@ -36,6 +37,12 @@ public class PingChecker {
 		lblAusServers.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		lblAusServers.setBounds(32, 117, 128, 45);
 		frmProject.getContentPane().add(lblAusServers);
+		
+		JLabel lblJpnServers = new JLabel("JPN Servers");
+		lblJpnServers.setHorizontalAlignment(SwingConstants.CENTER);
+		lblJpnServers.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblJpnServers.setBounds(32, 173, 128, 45);
+		frmProject.getContentPane().add(lblJpnServers);
 				
 		JLabel lblSEAPing = new JLabel("");
 		lblSEAPing.setHorizontalAlignment(SwingConstants.CENTER);
@@ -50,6 +57,13 @@ public class PingChecker {
 		lblAusPing.setBounds(152, 117, 96, 45);
 		frmProject.getContentPane().add(lblAusPing);
 		lblAusPing.setText("0");
+		
+		JLabel lblJPNPing = new JLabel("");
+		lblJPNPing.setHorizontalAlignment(SwingConstants.CENTER);
+		lblJPNPing.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblJPNPing.setBounds(152, 173, 96, 45);
+		frmProject.getContentPane().add(lblJPNPing);
+		lblJPNPing.setText("0");
 		
 		JButton btnRefreshSEA = new JButton("Refresh");
 		btnRefreshSEA.setBackground(new Color(255, 255, 255));
@@ -73,6 +87,17 @@ public class PingChecker {
 		btnRefreshAus.setBounds(258, 120, 128, 39);
 		frmProject.getContentPane().add(btnRefreshAus);
 		
+		JButton btnRefreshJPN = new JButton("Refresh");
+		btnRefreshJPN.setBackground(new Color(255, 255, 255));
+		btnRefreshJPN.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		btnRefreshJPN.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				lblJPNPing.setText(pingJPN());
+			}
+		});
+		btnRefreshJPN.setBounds(258, 176, 128, 39);
+		frmProject.getContentPane().add(btnRefreshJPN);
+		
 		JButton btnRefreshAll = new JButton("Refresh All");
 		btnRefreshAll.setBackground(new Color(255, 255, 255));
 		btnRefreshAll.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -80,9 +105,10 @@ public class PingChecker {
 			public void actionPerformed(ActionEvent e) {
 				lblSEAPing.setText(pingSEA());
 				lblAusPing.setText(pingAus());
+				lblJPNPing.setText(pingJPN());
 			}
 		});
-		btnRefreshAll.setBounds(32, 173, 367, 39);
+		btnRefreshAll.setBounds(32, 229, 367, 39);
 		frmProject.getContentPane().add(btnRefreshAll);
 	}
 	
@@ -137,4 +163,31 @@ public class PingChecker {
 		   }
 		return rttAus;
 	}
+	
+private String pingJPN() {
+		
+		String ipAddress1 = "103.194.164.48";
+		String rttJPN = "";
+		
+		try {
+		     InetAddress inet = InetAddress.getByName(ipAddress1);
+		 
+		     System.out.println("Sending Ping Request to " + ipAddress1);
+		 
+		     long finish = 0;
+		     long start = new GregorianCalendar().getTimeInMillis();
+		 
+		     if (inet.isReachable(5000)){
+		       finish = new GregorianCalendar().getTimeInMillis()-1;
+		       rttJPN = (finish - start + "ms");
+		       
+		     } else {
+		       rttJPN = "???";
+		     }
+		   } catch ( Exception e1 ) {
+		     System.out.println("Exception:" + e1.getMessage());
+		   }
+		return rttJPN;
+	}
+
 	}
